@@ -1,0 +1,57 @@
+import discord
+import json
+import requests
+from discord.ext import commands
+from config import settings
+import random
+
+bot = commands.Bot(command_prefix=settings['prefix'])
+
+
+@bot.command()
+async def hello(ctx):
+    author = ctx.message.author
+    await ctx.send(f'Hello, {author.mention}!')
+
+
+@bot.command()
+async def ok(ctx):
+    author = ctx.message.author
+    await ctx.send(f'OK, {author.mention}!')
+
+
+@bot.command()
+async def fox(ctx):
+    response = requests.get('https://some-random-api.ml/img/fox')  # Get-запрос
+    json_data = json.loads(response.text)  # Извлекаем JSON
+
+    embed = discord.Embed(color=0xff9900, title='Random Fox')  # Создание Embed'a
+    embed.set_image(url=json_data['link'])  # Устанавливаем картинку Embed'a
+    await ctx.send(embed=embed)  # Отправляем Embed
+
+
+@bot.command()
+async def clear(ctx, amount=None):
+    await ctx.channel.purge(limit=int(amount))
+    await ctx.channel.send(':: Сообщения успешно удалены')
+
+
+@bot.command()
+async def D20(ctx):
+    author = ctx.message.author
+    await ctx.send(f'Вам выпало:{random.randint(1, 20)}, {author.mention}!')
+
+
+@bot.command()
+async def kick(ctx, member: discord.Member, *, reason=None):
+    await bot.kick(member)
+    await ctx.send(f'Пользователь {member} кикнут, надеюсь не просто так')
+
+
+@bot.command()
+async def осуждаю(ctx):
+    author = ctx.message.author
+    await ctx.send(f'не круто чел, это низко, осуждаю!')
+
+
+bot.run(settings['token'])
