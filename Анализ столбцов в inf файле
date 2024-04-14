@@ -1,0 +1,45 @@
+import os
+from matplotlib import pyplot as plt
+
+
+def schet(z):  # функция счета стобликов в переменной
+    if z == 21:
+        a = 0
+    else:
+        a = z + 1
+    return a
+text = [i.strip().split() for i in f.readlines()]
+text.pop(0)
+text.pop(0)
+text.pop(0)
+text.pop(0)
+text.pop(0)
+x = []
+y = []
+y1 = []
+p = 0
+for i in text:  # обход списка и выделения двух массивов в стоблики
+    for j in i:
+        if p == 9:
+            y.append(j)
+        elif p == 0:
+            x.append(j)
+        elif p == 11:
+            y1.append(j)
+        p = schet(p)
+print(x)  # вывод массивов
+print(y)
+x = list(map(float, x))
+y = list(map(float, y))
+y1 = list(map(float, y1))
+plt.plot(x, y, color='green')  # постройка по двум массивам графика
+plt.plot(x, y1, color='red')
+plt.title('Line graph')
+plt.ylabel('Y axis')
+plt.xlabel('X axis')
+#x2 = list(map(float, stolb_12))
+#x2, y = y, x2
+#x2, y = y, x2
+#plt.plot(x2, color='pink', marker='o', markersize=2)
+plt.show()
+f.close()  # не забываем закрыть файл)
